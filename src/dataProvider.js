@@ -25,7 +25,8 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        console.log("Get List: ", query);
+        console.log("Get List: ", url);
+        console.log("Get List Query: ", JSON.stringify(query));
 
         return httpClient(url).then(({ headers, json }) => {
             console.log("API response: ", json);

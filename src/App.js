@@ -39,6 +39,7 @@ import Dashboard from './Dashboard';
 import authProvider from './authProvider';
 import dataProvider from './dataProvider';
 import {ActivityList, ActivityEdit, ActivityCreate} from './activities';
+import {CardinalList} from './cardinal';
 
 // const httpClient = (url, options = {}) => {
 //     if (!options.headers) {
@@ -54,7 +55,8 @@ import {ActivityList, ActivityEdit, ActivityCreate} from './activities';
 const App = () => (
       <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
           {/* <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} /> */}
-          <Resource name="activities" list={ActivityList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} />
+          <Resource name="activities" list={ActivityList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Activităţi' }} />
+          <Resource name="registration" list={CardinalList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Cardinal' }} />
           {/* <Resource name="users" list={UserList} icon={UserIcon} /> */}
       </Admin>
   );

@@ -1,9 +1,15 @@
 export default {
     // called when the user attempts to log in
-    login: ({ username }) => {
-        localStorage.setItem('username', username);
-        // accept all username/password combinations
-        return Promise.resolve();
+    login: ({ username, password }) => {
+        if (username.localeCompare("board@amosed.ro") === 0 
+        && password.localeCompare("12345678") === 0) {
+            localStorage.setItem('username', username);
+            // accept all username/password combinations
+            return Promise.resolve();
+        }
+        else {
+            return Promise.reject();
+        }
     },
     // called when the user clicks on the logout button
     logout: () => {

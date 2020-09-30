@@ -2,11 +2,9 @@ import React, { useState, Fragment } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {
-    List, Datagrid, TextField, ReferenceField, TextInput, ReferenceInput,
-    SelectInput, Edit, SimpleForm, EditButton, Create, Filter, SimpleList,
-    DateField, DateTimeInput, NumberInput
+    TextInput, Edit, SimpleForm, NumberInput
 } from 'react-admin';
-import { ActivityTitle } from './activities';
+import ActivityParticipants from './ActivityParticipants';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -20,29 +18,27 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                // <Box p={3}>
-                //     <Typography>{children}</Typography>
-                // </Box>
                 <div>{children}</div>
             )}
         </div>
     );
 }
 
+const ActivityTitle = ({ record }) => {
+    console.log(record);
+    return <span>{record ? `"${record.activity_name}"` : ''}</span>;
+};
+
 const ActivityEditor = props => {
+    console.log(props);
     return (
         <Edit title={<ActivityTitle />} {...props}>
             <SimpleForm>
-                {/* <TextInput disabled source="id" />
-                        <ReferenceInput source="userId" reference="users">
-                            <SelectInput optionText="name" />
-                        </ReferenceInput> */}
                 <TextInput disabled source="id" />
-                <TextInput source="activity_name" />
-                <DateTimeInput source="date" options={{ format: "YYYY-MM-DD HH:mm:ss" }} />
-                <NumberInput source="duration" />
-                <TextInput source="organizer" />
-                {/* <TextInput multiline source="body" /> */}
+                <TextInput source="activity_name" label="Numele activității"/>
+                <TextInput source="date" label="Data activității" />
+                <NumberInput source="duration" label="Durata" />
+                <TextInput source="organizer" label="Coordonator"/>
             </SimpleForm>
         </Edit>
     )
@@ -68,7 +64,7 @@ export default function ActivityEdit(props) {
                 {ActivityEditor(props)}
             </TabPanel>
             <TabPanel value={value} index={1}>
-                
+                <ActivityParticipants id={props.match.params.id} />
             </TabPanel>
         </Fragment>
     )

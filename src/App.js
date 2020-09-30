@@ -1,65 +1,24 @@
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-// import AdminApp from './admin-tutorial/admin';
-
-// function App() {
-//   return AdminApp;
-//   // return ( Admin
-//   //   // <div className="App">
-//   //   //   <header className="App-header">
-//   //   //     <img src={logo} className="App-logo" alt="logo" />
-//   //   //     <p>
-//   //   //       Edit <code>src/App.js</code> and save to reload.
-//   //   //     </p>
-//   //   //     <a
-//   //   //       className="App-link"
-//   //   //       href="https://reactjs.org"
-//   //   //       target="_blank"
-//   //   //       rel="noopener noreferrer"
-//   //   //     >
-//   //   //       Learn React
-//   //   //     </a>
-//   //   //   </header>
-//   //   // </div>
-//   // );
-// }
-
-// export default App;
-
-
 import * as React from "react";
-import { Admin, Resource, EditGuesser, fetchUtils } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from 'react-admin';
 import { UserEdit, UserList } from './users';
-import { PostList, PostEdit, PostCreate } from './posts';
 import PostIcon from '@material-ui/icons/Book';
 import UserIcon from '@material-ui/icons/Group';
 import Dashboard from './Dashboard';
 import authProvider from './authProvider';
 import dataProvider from './dataProvider';
-import {ActivityList, ActivityCreate} from './activities';
-import {CardinalList} from './cardinal';
+import { ActivityList, ActivityCreate } from './activities';
+import { CardinalList } from './cardinal';
 import ActivityEdit from './ActivityEdit';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
 
-// const httpClient = (url, options = {}) => {
-//     if (!options.headers) {
-//         options.headers = new Headers({ Accept: 'application/json' });
-//     }
-//     // add your own headers here
-//     options.headers.set('Content-Type', 'application/json');
-//     return fetchUtils.fetchJson(url, options);
-// }
-
-// const dataProvider = simpleRestProvider("https://api.amosed.ro/api", httpClient);
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
+
 const App = () => (
-      <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
-          {/* <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} /> */}
-          <Resource name="activities" list={ActivityList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Activităţi' }} />
-          <Resource name="registration" list={CardinalList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Înscrieri' }} />
-          <Resource name="users" edit={UserEdit} list={UserList} icon={UserIcon} options={{ label: 'Membri' }} />
-      </Admin>
-  );
+    <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
+        <Resource name="activities" list={ActivityList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Activităţi' }} />
+        <Resource name="registration" list={CardinalList} edit={ActivityEdit} create={ActivityCreate} icon={HowToRegIcon} options={{ label: 'Înscrieri' }} />
+        <Resource name="users" edit={UserEdit} list={UserList} icon={UserIcon} options={{ label: 'Membri' }} />
+    </Admin>
+);
 
 export default App;

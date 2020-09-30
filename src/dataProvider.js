@@ -25,22 +25,16 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        console.log("Get List: ", url);
-        console.log("Get List Query: ", JSON.stringify(query));
 
         return httpClient(url).then(({ headers, json }) => {
-            console.log("API response: ", json);
-            console.log(headers);
             return ({
                 data: json,
-                // total: parseInt(headers.get('content-range').split('/').pop(), 10),
                 total: json.length,
             })
         });
     },
 
     getOne: (resource, params) => {
-        console.log("Get One: ", params.id);
         return httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
             data: json,
         }));
@@ -50,7 +44,6 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        console.log("Get Many: ", query);
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ json }) => ({ data: json }));
     },
@@ -66,23 +59,19 @@ export default {
                 [params.target]: params.id,
             }),
         };
-        console.log("Get Many Reference: ", query);
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            // total: parseInt(headers.get('content-range').split('/').pop(), 10),
             total: json.length,
         }));
     },
 
     update: (resource, params) => {
-        console.log("Update: ", params);
         return httpClient(`${apiUrl}/${resource}/update/`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => {
-            console.log("RESPONSE: ", json);
             return { data: json }
         });
     },
@@ -91,7 +80,6 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        console.log("Update Many: ", query);
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
@@ -99,7 +87,6 @@ export default {
     },
 
     create: (resource, params) => {
-        console.log("Create: ", params.data);
         return fetch(`${apiUrl}/${resource}/add`, {
             method: "POST",
             body: JSON.stringify(params.data),
@@ -119,7 +106,6 @@ export default {
     },
 
     delete: (resource, params) => {
-        console.log("Delete: ", params);
         return fetch(`${apiUrl}/${resource}/${params.id}`, {
             method: "DELETE",
             headers: {

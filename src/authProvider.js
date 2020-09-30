@@ -1,6 +1,7 @@
 export default {
     // called when the user attempts to log in
     login: ({ username, password }) => {
+
         if (username.localeCompare("board@amosed.ro") === 0 
         && password.localeCompare("12345678") === 0) {
             localStorage.setItem('username', username);

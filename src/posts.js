@@ -13,9 +13,6 @@ const PostTitle = ({ record }) => {
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        {/* <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-            <SelectInput optionText="name" />
-        </ReferenceInput> */}
     </Filter>
 );
 
@@ -41,20 +38,6 @@ export const PostList = props => {
                         <EditButton />
                     </Datagrid>
                 )}
-
-            {/* <SimpleList
-                primaryText={record => record.title}
-                secondaryText={record => `${record.views} views`}
-                tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-            />
-            {/* <Datagrid>
-                <TextField source="id" />
-                <ReferenceField source="userId" reference="users">
-                    <TextField source="name" />
-                </ReferenceField>
-                <TextField source="title" />
-                <EditButton />
-            </Datagrid> */}
         </List>
     )};
 

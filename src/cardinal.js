@@ -24,7 +24,8 @@ const CardinalFilter = (props) => (
 export const CardinalList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List filters={<CardinalFilter />} {...props}>
+        // <List filters={<CardinalFilter />} {...props}>
+        <List {...props}>
 
             {/* {isSmall ? (
                 <SimpleList

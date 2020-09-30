@@ -4,14 +4,14 @@ import {
     SelectInput, Edit, SimpleForm, EditButton, Create, Filter, SimpleList,
     DateField, DateTimeInput, NumberInput
 } from 'react-admin';
-import { useMediaQuery } from '@material-ui/core';
+import { Tabs, Tab, useMediaQuery } from '@material-ui/core';
 // import frLocale from "date-fns/locale/fr";
 // import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 // import DateFnsUtils from '@date-io/date-fns';
 
 
-const ActivityTitle = ({ record }) => {
-    return <span>Post {record ? `"${record.title}"` : ''}</span>;
+export const ActivityTitle = ({ record }) => {
+    return <span>{record ? `"${record.title}"` : ''}</span>;
 };
 
 const ActivityFilter = (props) => (
@@ -36,35 +36,47 @@ export const ActivityList = props => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : ( */}
-                    <Datagrid>
-                        <TextField source="id" />
-                        {/* <ReferenceField label="Title" source="activity_name"> */}
-                        <TextField source="activity_name" label="Nume activitate" />
-                        {/* </ReferenceField> */}
-                        <DateField source="date" showTime locales="ro-RO" label="Data" />
-                        <TextField source="duration" label="Durata" />
-                        <TextField source="organizer" label="Organizator" />
-                        <EditButton />
-                    </Datagrid>
-                {/* )} */}
+            <Datagrid rowClick="edit">
+                <TextField source="id" />
+                {/* <ReferenceField label="Title" source="activity_name"> */}
+                <TextField source="activity_name" label="Nume activitate" />
+                {/* </ReferenceField> */}
+                <DateField source="date" showTime locales="ro-RO" label="Data" />
+                <TextField source="duration" label="Durata" />
+                <TextField source="organizer" label="Organizator" />
+                {/* <EditButton /> */}
+            </Datagrid>
+            {/* )} */}
         </List>
-    )};
+    )
+};
 
-export const ActivityEdit = props => (
-    <Edit title={<ActivityTitle />} {...props}>
-        <SimpleForm>
-            {/* <TextInput disabled source="id" />
-            <ReferenceInput source="userId" reference="users">
-                <SelectInput optionText="name" />
-            </ReferenceInput> */}
-            <TextInput disabled source="id" />
-            <TextInput source="activity_name" />
-            <DateTimeInput source="date" options={{ format: "YYYY-MM-DD HH:mm:ss"}} />
-            <NumberInput source="duration" />
-            <TextInput source="organizer" />
-            {/* <TextInput multiline source="body" /> */}
-        </SimpleForm>
-    </Edit>
+export const ActivityEditor = props => (
+
+    <Tabs
+        variant="fullWidth"
+        centered
+        // value={filterValues.status}
+        // indicatorColor="primary"
+        // onChange={handleChange}
+    >
+        <Tab key={"details"} label="Detalii activitate" value={"details"} />
+        <Tab key={"participants"} label="Participanţi" value={"participants"} />
+    </Tabs>
+    // <Edit title={<ActivityTitle />} {...props}>
+    //     <SimpleForm>
+    //         {/* <TextInput disabled source="id" />
+    //         <ReferenceInput source="userId" reference="users">
+    //             <SelectInput optionText="name" />
+    //         </ReferenceInput> */}
+    //         <TextInput disabled source="id" />
+    //         <TextInput source="activity_name" />
+    //         <DateTimeInput source="date" options={{ format: "YYYY-MM-DD HH:mm:ss"}} />
+    //         <NumberInput source="duration" />
+    //         <TextInput source="organizer" />
+    //         {/* <TextInput multiline source="body" /> */}
+    //     </SimpleForm>
+    // </Edit>
 );
 
 const isCorrectFormat = (dateString) => {

@@ -22,6 +22,7 @@ const CardinalFilter = (props) => (
 );
 
 export const CardinalList = props => {
+    console.log("Cardinal list props: ", props);
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
         // <List filters={<CardinalFilter />} {...props}>
@@ -44,6 +45,7 @@ export const CardinalList = props => {
                         <TextField source="member" label="Moseador" />
                         <TextField source="phone_number" label="Număr de telefon" />
                         <TextField source="email" label="Email" />
+                        <TextField source="registration_date" label="Data înregistrării" />
                         {/* <EditButton /> */}
                     </Datagrid>
                 {/* )} */}

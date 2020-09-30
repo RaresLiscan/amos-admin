@@ -31,15 +31,16 @@
 import * as React from "react";
 import { Admin, Resource, EditGuesser, fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import { UserList } from './users';
+import { UserEdit, UserList } from './users';
 import { PostList, PostEdit, PostCreate } from './posts';
 import PostIcon from '@material-ui/icons/Book';
 import UserIcon from '@material-ui/icons/Group';
 import Dashboard from './Dashboard';
 import authProvider from './authProvider';
 import dataProvider from './dataProvider';
-import {ActivityList, ActivityEdit, ActivityCreate} from './activities';
+import {ActivityList, ActivityCreate} from './activities';
 import {CardinalList} from './cardinal';
+import ActivityEdit from './ActivityEdit';
 
 // const httpClient = (url, options = {}) => {
 //     if (!options.headers) {
@@ -56,8 +57,8 @@ const App = () => (
       <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
           {/* <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} /> */}
           <Resource name="activities" list={ActivityList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Activităţi' }} />
-          <Resource name="registration" list={CardinalList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Cardinal' }} />
-          {/* <Resource name="users" list={UserList} icon={UserIcon} /> */}
+          <Resource name="registration" list={CardinalList} edit={ActivityEdit} create={ActivityCreate} icon={PostIcon} options={{ label: 'Înscrieri' }} />
+          <Resource name="users" edit={UserEdit} list={UserList} icon={UserIcon} options={{ label: 'Membri' }} />
       </Admin>
   );
 

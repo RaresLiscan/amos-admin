@@ -82,6 +82,7 @@ export default {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => {
+            console.log("RESPONSE: ", json);
             return { data: json }
         });
     },

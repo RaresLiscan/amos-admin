@@ -5,6 +5,7 @@ import {
     TextInput, Edit, SimpleForm, NumberInput
 } from 'react-admin';
 import ActivityParticipants from './ActivityParticipants';
+import QRCode from 'qrcode.react';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -51,6 +52,7 @@ export default function ActivityEdit(props) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     }
+    console.log(props);
 
     return (
 
@@ -58,6 +60,7 @@ export default function ActivityEdit(props) {
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label="Detalii activitate" value={0} id={"detalii"} />
                 <Tab label="Participanţi" value={1} id={"participants"} />
+                <Tab label="Cod QR" value={2} id={"qr"}/>
             </Tabs>
 
             <TabPanel value={value} index={0}>
@@ -65,6 +68,9 @@ export default function ActivityEdit(props) {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <ActivityParticipants id={props.match.params.id} />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <QRCode style={{ margin: '3%'}} value={`https://moseadori.amosed.ro/${props.id}`} size={300} />
             </TabPanel>
         </Fragment>
     )

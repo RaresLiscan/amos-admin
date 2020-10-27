@@ -6,6 +6,8 @@ import {
 } from 'react-admin';
 import ActivityParticipants from './ActivityParticipants';
 import QRCode from 'qrcode.react';
+import ParticipantsPdf from './participantsPdf';
+import ReactPdf from '@react-pdf/renderer';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -61,6 +63,7 @@ export default function ActivityEdit(props) {
                 <Tab label="Detalii activitate" value={0} id={"detalii"} />
                 <Tab label="Participanţi" value={1} id={"participants"} />
                 <Tab label="Cod QR" value={2} id={"qr"}/>
+                <Tab label="Fișă de prezență" value={3} id="prezenta"/>
             </Tabs>
 
             <TabPanel value={value} index={0}>
@@ -71,6 +74,9 @@ export default function ActivityEdit(props) {
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <QRCode style={{ margin: '3%'}} value={`https://moseadori.amosed.ro/${props.id}`} size={300} />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <ParticipantsPdf />
             </TabPanel>
         </Fragment>
     )

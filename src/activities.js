@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    List, Datagrid, TextField, TextInput, SimpleForm, Create, DateField, NumberInput
+    List, Datagrid, TextField, TextInput, SimpleForm, Create, DateField, NumberInput, Filter
 } from 'react-admin';
 import { Tabs, Tab } from '@material-ui/core';
 
@@ -9,11 +9,17 @@ export const ActivityTitle = ({ record }) => {
     return <span>{record ? `"${record.title}"` : ''}</span>;
 };
 
+const ActivityFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="name" alwaysOn />
+    </Filter>
+);
+
 
 export const ActivityList = props => {
     return (
         // <List filters={<ActivityFilter />} {...props}>
-        <List {...props}>
+        <List filters={<ActivityFilter />} {...props}>
             <Datagrid rowClick="edit">
                 <TextField source="id" />
                 <TextField source="activity_name" label="Nume activitate" />

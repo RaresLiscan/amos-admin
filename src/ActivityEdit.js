@@ -7,7 +7,8 @@ import {
 import ActivityParticipants from './ActivityParticipants';
 import QRCode from 'qrcode.react';
 import ParticipantsPdf from './participantsPdf';
-import ReactPdf from '@react-pdf/renderer';
+import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
+import Report from './templateRaportLunar';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -28,12 +29,12 @@ function TabPanel(props) {
 }
 
 const ActivityTitle = ({ record }) => {
-    console.log(record);
+    // console.log(record);
     return <span>{record ? `"${record.activity_name}"` : ''}</span>;
 };
 
 const ActivityEditor = props => {
-    console.log(props);
+    // console.log(props);
     return (
         <Edit title={<ActivityTitle />} {...props}>
             <SimpleForm>
@@ -54,7 +55,6 @@ export default function ActivityEdit(props) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     }
-    console.log(props);
 
     return (
 
@@ -76,7 +76,11 @@ export default function ActivityEdit(props) {
                 <QRCode style={{ margin: '3%'}} value={`https://moseadori.amosed.ro/${props.id}`} size={300} />
             </TabPanel>
             <TabPanel value={value} index={3}>
-                <ParticipantsPdf />
+                {/* <ParticipantsPdf /> */}
+                {/* {ReactPDF.render(<Report />)} */}
+                <PDFViewer style={{width: '100%', height: 900}}>
+                    <Report />
+                </PDFViewer>
             </TabPanel>
         </Fragment>
     )

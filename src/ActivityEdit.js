@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {
@@ -51,9 +51,35 @@ const ActivityEditor = props => {
 export default function ActivityEdit(props) {
 
     const [value, setValue] = useState(0);
+    const [pdfData, setPdf] = useState([]);
+    const [activities, setActivities] = useState([]);
+    const [loadedData, setLoaded] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    }
+
+    useEffect(() => {
+        if (loadedData === false) {
+            data(10, 2020);
+            setLoaded(true);
+        }
+    })
+
+    const data = async (month, year) => {
+        let jsonData = {};
+        await fetch(`https://api.amosed.ro/api/participants?month=${month}&year=${year}`)
+            .then(response => response.json())
+            .then(json => {
+                setPdf(json);
+                // console.log(json);
+            })
+            .catch(error => console.error(error));
+
+        await fetch("https://api.amosed.ro/api/activities")
+            .then(response => response.json())
+            .then(json => setActivities(json))
+            .catch(error => console.log(error));
     }
 
     return (
@@ -79,7 +105,7 @@ export default function ActivityEdit(props) {
                 {/* <ParticipantsPdf /> */}
                 {/* {ReactPDF.render(<Report />)} */}
                 <PDFViewer style={{width: '100%', height: 900}}>
-                    <Report />
+                    <Report data={pdfData} activities = {activities}/>
                 </PDFViewer>
             </TabPanel>
         </Fragment>

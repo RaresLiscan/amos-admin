@@ -1,143 +1,141 @@
 import React from "react";
 import ReactPDF, { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import antet from './img/antet.png';
+import arial from './arial/ArialCE.ttf';
+import arialBold from './arial/ArialCEBold.ttf';
 
-//TODO: luat toate activitatile pe o anumita luna din server
-//TODO: creat continut dinamic in functie de acele activitati
+//API LINK: https://api.amosed.ro/api/participants?month={month}&year={year}
 
-//API LINK: https://api.amosed.ro/api/activities?month={month}&year={year}
-
-const data = (month, year) => {
-  return fetch(`https://api.amosed.ro/api/activities?month=${month}&year=${year}`)
-    .then(response => response.json())
-    .then(json => {
-      return json;
-    })
-    .catch(error => console.error(error));
-}
-
+/**
+ * PROPS:
+ * 1. activities: array with all the activities from the database took from:
+ * https://api.amosed.ro/api/activities
+ * 2. data: all the participants in the required format
+ * https://api.amosed.ro/api/participants?month={month}&year={year}
+ * */
 export default class Report extends React.Component {
 
   constructor(props) {
     super(props);
+    // console.log(this.props.activities)
     this.state = {
-      data: [],
     }
   }
 
-  // getData = async(month, year) => {
-  //   await fetch(`https://api.amosed.ro/api/activities?month=${month}&year=${year}`)
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       this.setState({data: json});
-  //       console.log(json);
-  //     })
-  //     .catch(error => console.error(error));
-  // }
+  getActivityCoordinator = (id) => {
+    const {activities} = this.props;
 
-  // componentDidMount() {
-  //   this.getData(10, 2020);
-  // }
+    return activities.map(act => {
+      if (act.id === id) {
+        return act.organizer;
+      }
+    })
+
+  }
+
+  getActivityDate = (id) => {
+    const {activities} = this.props;
+
+    return activities.map(act => {
+      if (act.id === id) {
+        return act.date.substring(0,10);
+      }
+    })
+
+  }
 
   render() {
+    const {data} = this.props;
+    // console.log(data);
     return (
       <Document>
-        <Page style={styles.body}>
-          <View style={styles.header}>
-            <Image style={styles.image} src={antet} fixed />
-          </View>
-          {/* <View style={styles.header} fixed> */}
-          {/* <Image
-              style={styles.image}
-              src="D:\Projects\amos-admin\src\img\antet.png"
-              fixed
-            /> */}
-          {/* <Text>Test header daca apare</Text> */}
-          {/* </View> */}
+        {/*<Page style={styles.body}>*/}
+        {/*  <View style={styles.header}>*/}
+        {/*    <Image style={styles.image} src={antet} fixed />*/}
+        {/*  </View>*/}
+
+
+          {data.map(act => {
+            return (
+                <Page style={{ padding: '4%', flex: 1, flexWrap: 'wrap'}}>
+                  <View style={styles.header}>
+                    <Image style={styles.image} src={antet} fixed />
+                  </View>
+                  <View>
+                    <Text style={{ textAlign: 'center' }}>{act[0].activity_name}</Text>
+                    <Text style={[{ textAlign: 'center' }, styles.text]}>Data: {this.getActivityDate(act[0].activity_id)}</Text>
+                  </View>
+                  <View style={styles.table}>
+                    <View style={styles.row}>
+                      <View style={styles.titleCellLeft}>
+                        <Text style={styles.title}>Nr. crt</Text>
+                      </View>
+                      <View style={styles.titleCellRight}>
+                        <Text style={styles.title}>Nume si prenume participant</Text>
+                      </View>
+                    </View>
+
+                    {act.map((part, index) => (
+                          <View style={styles.row}>
+                            <View style={styles.cellLeft}>
+                              <Text style={styles.text}>{index + 1}.</Text>
+                            </View>
+                            <View style={styles.cellRight}>
+                              <Text style={styles.text}>{part.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}</Text>
+                            </View>
+                          </View>
+                    ))}
+                  </View>
+                  <View>
+                    <Text style={[styles.title]}>Coordonator: {this.getActivityCoordinator(act[0].activity_id)}</Text>
+                    <Text style={[styles.text]}>Semnatura: </Text>
+                  </View>
+                </Page>
+            )
+          })}
   
-          <View>
-            <Text style={{ textAlign: 'center', fontSize: 18 }}>Activitate 1</Text>
-          </View>
-          <View style={styles.table}>
-            <View style={styles.row}>
-              <View style={styles.titleCellLeft}>
-                <Text style={styles.title}>Nr. crt</Text>
-              </View>
-              <View style={styles.titleCellRight}>
-                <Text style={styles.title}>Nume si prenume participant</Text>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.cellLeft}>
-                <Text style={styles.text}>1.</Text>
-              </View>
-              <View style={styles.cellRight}>
-                <Text style={styles.text}>Rares Liscan</Text>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.cellLeft}>
-                <Text style={styles.text}>2.</Text>
-              </View>
-              <View style={styles.cellRight}>
-                <Text style={styles.text}>Victor Boar</Text>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.cellLeft}>
-                <Text style={styles.text}>3.</Text>
-              </View>
-              <View style={styles.cellRight}>
-                <Text style={styles.text}>Anamaria Botezan</Text>
-              </View>
-            </View>
-          </View>
-          <View>
-            <Text style={[styles.title, { marginBottom: '5%' }]}>Coordonator: Andrei Tritean</Text>
-          </View>
+          {/*<View>*/}
+          {/*  <Text style={{ textAlign: 'center', fontSize: 18 }}>Activitate 2</Text>*/}
+          {/*</View>*/}
+          {/*<View style={styles.table}>*/}
+          {/*  <View style={styles.row}>*/}
+          {/*    <View style={styles.titleCellLeft}>*/}
+          {/*      <Text style={styles.title}>Nr. crt</Text>*/}
+          {/*    </View>*/}
+          {/*    <View style={styles.titleCellRight}>*/}
+          {/*      <Text style={styles.title}>Nume si prenume participant</Text>*/}
+          {/*    </View>*/}
+          {/*  </View>*/}
+          {/*  <View style={styles.row}>*/}
+          {/*    <View style={styles.cellLeft}>*/}
+          {/*      <Text style={styles.text}>1.</Text>*/}
+          {/*    </View>*/}
+          {/*    <View style={styles.cellRight}>*/}
+          {/*      <Text style={styles.text}>Rares Liscan</Text>*/}
+          {/*    </View>*/}
+          {/*  </View>*/}
+          {/*  <View style={styles.row}>*/}
+          {/*    <View style={styles.cellLeft}>*/}
+          {/*      <Text style={styles.text}>2.</Text>*/}
+          {/*    </View>*/}
+          {/*    <View style={styles.cellRight}>*/}
+          {/*      <Text style={styles.text}>Victor Boar</Text>*/}
+          {/*    </View>*/}
+          {/*  </View>*/}
+          {/*  <View style={styles.row}>*/}
+          {/*    <View style={styles.cellLeft}>*/}
+          {/*      <Text style={styles.text}>3.</Text>*/}
+          {/*    </View>*/}
+          {/*    <View style={styles.cellRight}>*/}
+          {/*      <Text style={styles.text}>Anamaria Botezan</Text>*/}
+          {/*    </View>*/}
+          {/*  </View>*/}
+          {/*</View>*/}
+          {/*<View>*/}
+
+          {/*</View>*/}
   
-          <View>
-            <Text style={{ textAlign: 'center', fontSize: 18 }}>Activitate 2</Text>
-          </View>
-          <View style={styles.table}>
-            <View style={styles.row}>
-              <View style={styles.titleCellLeft}>
-                <Text style={styles.title}>Nr. crt</Text>
-              </View>
-              <View style={styles.titleCellRight}>
-                <Text style={styles.title}>Nume si prenume participant</Text>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.cellLeft}>
-                <Text style={styles.text}>1.</Text>
-              </View>
-              <View style={styles.cellRight}>
-                <Text style={styles.text}>Rares Liscan</Text>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.cellLeft}>
-                <Text style={styles.text}>2.</Text>
-              </View>
-              <View style={styles.cellRight}>
-                <Text style={styles.text}>Victor Boar</Text>
-              </View>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.cellLeft}>
-                <Text style={styles.text}>3.</Text>
-              </View>
-              <View style={styles.cellRight}>
-                <Text style={styles.text}>Anamaria Botezan</Text>
-              </View>
-            </View>
-          </View>
-          <View>
-            <Text style={[styles.title, { marginBottom: '5%' }]}>Coordonator: Andrei Tritean</Text>
-          </View>
-  
-        </Page>
+        {/*</Page>*/}
       </Document>
     )
   }
@@ -145,9 +143,14 @@ export default class Report extends React.Component {
 };
 
 Font.register({
-  family: 'Oswald',
-  src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
+  family: 'Arial',
+  src: arial
 });
+
+Font.register({
+  family: "ArialBold",
+  src: arialBold
+})
 
 const styles = StyleSheet.create({
   body: {
@@ -162,8 +165,8 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     alignItems: 'center',
-    margin: '1%',
-    marginBottom: '2.5%'
+    padding: '1%',
+    paddingBottom: '2.5%'
   },
   pageNumber: {
     position: 'absolute',
@@ -184,15 +187,18 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: 'black',
     borderWidth: 2,
+    flexWrap: 'wrap'
   },
 
   title: {
-    fontSize: 15,
+    fontSize: 12,
+    fontFamily: "ArialBold"
     // fontFamily: "Oswald"
   },
 
   text: {
     fontSize: 11,
+    fontFamily: "Arial"
   },
 
   titleCellLeft: {

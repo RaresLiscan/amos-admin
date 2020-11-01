@@ -81,12 +81,12 @@ export default function Dashboard() {
                 <CardContent>Lorem ipsum sic dolor amet...</CardContent>
             </Card>
 
-            <Card>
-                <CardHeader title="Rapoartele activitatii in fiecare luna"/>
-                <CardContent>
-                    {renderReports()}
-                </CardContent>
-            </Card>
+            {/*<Card>*/}
+            {/*    <CardHeader title="Rapoartele activitatii in fiecare luna"/>*/}
+            {/*    <CardContent>*/}
+            {/*        {renderReports()}*/}
+            {/*    </CardContent>*/}
+            {/*</Card>*/}
 
         </div>
     )

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { List, Datagrid, TextField, EmailField, Edit, TextInput, NumberInput,
+import { List, Datagrid, TextField, EmailField, TextInput, NumberInput,
 SimpleForm } from 'react-admin';
 
 export const UserTitle = ({ record }) => {
@@ -18,13 +18,14 @@ export const UserList = props => (
 );
 
 export const UserEdit = props => (
-    <Edit title={<UserTitle />} {...props}>
-        <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="name" label="Nume" />
-            <TextInput source="email"  />
-            <NumberInput source="activity_time" label="Timp la activitati" />
-            <NumberInput source="work_time" label="Timp de voluntariat" />
-        </SimpleForm>
-    </Edit>
+    <div></div>
+    // <Edit title={<UserTitle />} {...props}>
+    //     <SimpleForm>
+    //         <TextInput disabled source="id" />
+    //         <TextInput source="name" label="Nume" />
+    //         <TextInput source="email"  />
+    //         <NumberInput source="activity_time" label="Timp la activitati" />
+    //         <NumberInput source="work_time" label="Timp de voluntariat" />
+    //     </SimpleForm>
+    // </Edit>
 )

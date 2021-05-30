@@ -1,8 +1,8 @@
 import React from "react";
 import ReactPDF, { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import antet from './img/antet.png';
-import arial from './arial/ArialCE.ttf';
-import arialBold from './arial/ArialCEBold.ttf';
+import antet from '../img/antet.png';
+import arial from '../arial/ArialCE.ttf';
+import arialBold from '../arial/ArialCEBold.ttf';
 
 //API LINK: https://api.amosed.ro/api/participants?month={month}&year={year}
 

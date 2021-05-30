@@ -22,10 +22,10 @@ export const ActivityList = props => {
         <List filters={<ActivityFilter />} {...props}>
             <Datagrid rowClick="edit">
                 <TextField source="id" />
-                <TextField source="activity_name" label="Nume activitate" />
-                <DateField source="date" showTime locales="ro-RO" label="Data" />
-                <TextField source="duration" label="Durata" />
-                <TextField source="organizer" label="Organizator" />
+                <TextField source="name" label="Nume activitate" />
+                <DateField source="date" locales="ro-RO" label="Data" />
+                <TextField source="time" label="Durata" />
+                {/*<TextField source="contact" label="Organizator" />*/}
             </Datagrid>
         </List>
     )
@@ -43,15 +43,18 @@ export const ActivityEditor = () => (
 );
 
 const isCorrectFormat = (dateString) => {
+    //Checking for correct date format using a regex
     const regex = /[0-9]{4}-[0-9]{2}-[0-3][0-9] [0-9]{2}:[0-9]{2}:[0-9]{2}/;
-    console.log(regex.test(dateString));
     return regex.test(dateString);
 }
 
 const createFormValidation = (values) => {
     const errors = {};
-    if (!values.activity_name) {
-        errors.activity_name = "Numele activitatii e obligatoriu!";
+    if (!values.name) {
+        errors.name = "Numele activitatii e obligatoriu!";
+    }
+    if (!values.description) {
+        errors.description = "Descrierea este obligatorie"
     }
     if (!values.date) {
         errors.date = "Activitatea este obligatorie";
@@ -59,10 +62,10 @@ const createFormValidation = (values) => {
     if (!isCorrectFormat(values.date)) {
         errors.date = "Formatarea datei este incorecta. Data trebuie sa fie in formatul YYYY-MM-DD HH:mm:ss";
     }
-    if (!values.duration) {
+    if (!values.time) {
         errors.duration = "Durata activitatii e obligatoriu!";
     }
-    if (!values.organizer) {
+    if (!values.contact) {
         errors.organizer = "Organizatorul activitatii e obligatoriu!";
     }
     return errors;
@@ -71,10 +74,11 @@ const createFormValidation = (values) => {
 export const ActivityCreate = props => (
     <Create {...props}>
         <SimpleForm validate={createFormValidation}>
-            <TextInput source="activity_name" label="Nume activitate" />
+            <TextInput source="name" label="Nume activitate" />
+            <TextInput source={"description"} label={"Descrierea"}/>
             <TextInput source="date" label="Data" options={{ format: "YYYY-MM-DD HH:mm:ss)" }} />
-            <NumberInput source="duration" label="Durata" />
-            <TextInput source="organizer" label="Organizator" />
+            <NumberInput source="time" label="Durata" />
+            <TextInput source="contact" label="Numar de contact" />
         </SimpleForm>
     </Create>
 );

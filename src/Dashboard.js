@@ -4,7 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { BlobProvider } from '@react-pdf/renderer';
-import Report from './templateRaportLunar';
+import Report from './cardinal/templateRaportLunar';
 
 const months = ["", "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie",
     "Octombrie", "Noiembrie", "Decembrie"];

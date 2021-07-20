@@ -5,6 +5,7 @@ const apiUrl = 'http://localhost:8081';
 const httpClient = fetchUtils.fetchJson;
 
 export default {
+    API_URL: apiUrl,
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;

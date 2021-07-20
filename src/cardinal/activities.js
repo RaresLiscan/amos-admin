@@ -78,6 +78,7 @@ export const ActivityCreate = props => (
             <TextInput source={"description"} label={"Descrierea"}/>
             <TextInput source="date" label="Data" options={{ format: "YYYY-MM-DD HH:mm:ss)" }} />
             <NumberInput source="time" label="Durata" />
+            <TextInput source="organizer" label="Coordonatorul proiectului" />
             <TextInput source="contact" label="Numar de contact" />
         </SimpleForm>
     </Create>

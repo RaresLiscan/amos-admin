@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import dataProviderNode from "../data/dataProviderNode";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -42,15 +43,18 @@ export default function ParticipantComponent(props) {
     console.log(props);
 
     const requestDeletion = async (id) => {
-        await fetch(`https://api.amosed.ro/api/registration/${id}`, {
+
+        await fetch(`${dataProviderNode.API_URL}/participants/${id}`, {
             method: "DELETE",
-            cors: 'cors'
+            cors: "cors",
         })
-            .then((response) => {
+            .then(response => {
                 setReload(true);
                 props.reload();
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.error(error);
+            })
     }
 
     return (
@@ -67,10 +71,10 @@ export default function ParticipantComponent(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {participants.map((row) => (
+                    {participants.map((row, index) => (
                         <StyledTableRow key={row.id}>
                             <StyledTableCell component="th" scope="row">
-                                {row.id}
+                                {index+1}
                             </StyledTableCell>
                             <StyledTableCell align="right">{row.name}</StyledTableCell>
                             <StyledTableCell align="right">{row.email}</StyledTableCell>

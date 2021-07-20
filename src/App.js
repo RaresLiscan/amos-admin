@@ -5,7 +5,7 @@ import PostIcon from '@material-ui/icons/Book';
 import UserIcon from '@material-ui/icons/Group';
 import Dashboard from './Dashboard';
 import authProvider from './auth/authProvider';
-import dataProvider from './dataProvider';
+import dataProvider from './data/dataProvider';
 import { ActivityList, ActivityCreate } from './cardinal/activities';
 import { CardinalList } from './cardinal/cardinal';
 import ActivityEdit from './cardinal/ActivityEdit';
@@ -19,7 +19,8 @@ import {
 } from "react-router-dom";
 import MonthlyActivityReport from "./cardinal/monthlyActivityReport";
 import StatsAndReports from "./cardinal/statsAndReports";
-import dataProviderNode from "./dataProviderNode";
+import dataProviderNode from "./data/dataProviderNode";
+import {EditActivity} from "./cardinal/EditActivity";
 
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 const App = () => (

@@ -2,7 +2,7 @@ import React, {useState, Fragment, useEffect} from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {
-    TextInput, Edit, SimpleForm, NumberInput
+    TextInput, Edit, SimpleForm, NumberInput, useGetOne, useGetList
 } from 'react-admin';
 import ActivityParticipants from './ActivityParticipants';
 import QRCode from 'qrcode.react';
@@ -29,20 +29,20 @@ function TabPanel(props) {
 }
 
 const ActivityTitle = ({ record }) => {
-    // console.log(record);
-    return <span>{record ? `"${record.activity_name}"` : ''}</span>;
+    return <span>{record ? `"${record.name}"` : ''}</span>;
 };
 
 const ActivityEditor = props => {
-    // console.log(props);
     return (
         <Edit title={<ActivityTitle />} {...props}>
             <SimpleForm>
-                <TextInput disabled source="id" />
-                <TextInput source="activity_name" label="Numele activității"/>
-                <TextInput source="date" label="Data activității" />
-                <NumberInput source="duration" label="Durata" />
-                <TextInput source="organizer" label="Coordonator"/>
+                <TextInput source={"id"} disabled/>
+                <TextInput source={"name"}/>
+                <TextInput source={"description"} />
+                <TextInput source={"contact"} placeholder={"Persoana de contact"} />
+                <TextInput source={"date"} placeholder={"Data proiectului"} />
+                <TextInput source={"organizer"} placeholder={"Coordonatorul proiectului"} />
+                <NumberInput source={"time"} placeholder={"Durata (in minute)"} />
             </SimpleForm>
         </Edit>
     )
@@ -54,17 +54,32 @@ export default function ActivityEdit(props) {
     const [pdfData, setPdf] = useState([]);
     const [activities, setActivities] = useState([]);
     const [loadedData, setLoaded] = useState(false);
+    const projectData = useGetOne("projects", props.match.params.id);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     }
 
     useEffect(() => {
+        console.log(props);
         if (loadedData === false) {
-            data(10, 2020);
+            // data(10, 2020);
+            getPdfData(props.match.params.id);
             setLoaded(true);
         }
-    })
+    }, []);
+
+    const getPdfData = async (id) => {
+        await fetch(`http://localhost:8081/participants/${id}`)
+            .then(response => response.json())
+            .then((json) => {
+                console.log(json);
+                setPdf(json);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
 
     const data = async (month, year) => {
         let jsonData = {};
@@ -105,7 +120,7 @@ export default function ActivityEdit(props) {
                 {/* <ParticipantsPdf /> */}
                 {/* {ReactPDF.render(<Report />)} */}
                 <PDFViewer style={{width: '100%', height: 900}}>
-                    <Report data={pdfData} activities = {activities}/>
+                    <Report data={pdfData} projectData={projectData} />
                 </PDFViewer>
             </TabPanel>
         </Fragment>

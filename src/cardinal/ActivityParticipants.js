@@ -1,5 +1,6 @@
 import React from 'react';
 import ParticipantComponent from './ParticipantComponent';
+import dataProviderNode from "../data/dataProviderNode";
 
 
 export default class ActivityParticipants extends React.Component {
@@ -17,18 +18,32 @@ export default class ActivityParticipants extends React.Component {
     }
 
     loadData = async () => {
-        await fetch(`https://api.amosed.ro/api/participants/${this.props.id}`, {
+        // await fetch(`https://api.amosed.ro/api/participants/${this.props.id}`, {
+        //     method: "GET",
+        //     cors: "cors",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // })
+        //     .then(response => response.json())
+        //     .then(json => {
+        //         this.setState({ participants: json, loaded: true });
+        //     })
+        //     .catch(error => console.log(error));
+        await fetch(`${dataProviderNode.API_URL}/participants/${this.props.id}`, {
             method: "GET",
             cors: "cors",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
         })
             .then(response => response.json())
             .then(json => {
-                this.setState({ participants: json, loaded: true });
+                this.setState({participants: json, loaded: true});
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.error(error);
+            })
     }
 
     async componentDidMount() {

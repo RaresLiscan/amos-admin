@@ -2,13 +2,15 @@ import React, {useState, Fragment, useEffect} from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {
-    TextInput, Edit, SimpleForm, NumberInput, useGetOne, useGetList
+    TextInput, Edit, SimpleForm, NumberInput, useGetOne, useGetList, TopToolbar, ShowButton 
 } from 'react-admin';
 import ActivityParticipants from './ActivityParticipants';
 import QRCode from 'qrcode.react';
 import ParticipantsPdf from './participantsPdf';
 import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
 import Report from './templateRaportLunar';
+import generatePDF from './fisaRegistru';
+import Button from '@material-ui/core/Button';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -31,6 +33,17 @@ function TabPanel(props) {
 const ActivityTitle = ({ record }) => {
     return <span>{record ? `"${record.name}"` : ''}</span>;
 };
+
+const ActivityActions = (pdfData, projectData) => {
+    console.log(projectData);
+    return (
+        <TopToolbar>
+            
+            {/* Add your custom actions */}
+            <Button color="primary" onClick={() => generatePDF(pdfData, projectData)}>Descarcă fișa de registru</Button>
+        </TopToolbar>
+    )
+}
 
 const ActivityEditor = props => {
     return (
@@ -61,12 +74,7 @@ export default function ActivityEdit(props) {
     }
 
     useEffect(() => {
-        console.log(props);
-        if (loadedData === false) {
-            // data(10, 2020);
-            getPdfData(props.match.params.id);
-            setLoaded(true);
-        }
+        getPdfData(props.match.params.id);
     }, []);
 
     const getPdfData = async (id) => {
@@ -75,54 +83,57 @@ export default function ActivityEdit(props) {
             .then((json) => {
                 console.log(json);
                 setPdf(json);
+                setLoaded(true);
             })
             .catch(error => {
                 console.error(error);
             })
     }
 
-    const data = async (month, year) => {
-        let jsonData = {};
-        await fetch(`https://api.amosed.ro/api/participants?month=${month}&year=${year}`)
-            .then(response => response.json())
-            .then(json => {
-                setPdf(json);
-                // console.log(json);
-            })
-            .catch(error => console.error(error));
+    // const data = async (month, year) => {
+    //     let jsonData = {};
+    //     await fetch(`https://api.amosed.ro/api/participants?month=${month}&year=${year}`)
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             setPdf(json);
+    //             // console.log(json);
+    //         })
+    //         .catch(error => console.error(error));
 
-        await fetch("https://api.amosed.ro/api/activities")
-            .then(response => response.json())
-            .then(json => setActivities(json))
-            .catch(error => console.log(error));
-    }
+    //     await fetch("https://api.amosed.ro/api/activities")
+    //         .then(response => response.json())
+    //         .then(json => setActivities(json))
+    //         .catch(error => console.log(error));
+    // }
 
     return (
 
         <Fragment>
+            
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label="Detalii activitate" value={0} id={"detalii"} />
                 <Tab label="Participanţi" value={1} id={"participants"} />
                 <Tab label="Cod QR" value={2} id={"qr"}/>
-                <Tab label="Fișă de prezență" value={3} id="prezenta"/>
+                {/* <Tab label="Fișă de prezență" value={3} id="prezenta"/> */}
             </Tabs>
 
             <TabPanel value={value} index={0}>
+                {ActivityActions(pdfData, projectData)}
                 {ActivityEditor(props)}
             </TabPanel>
             <TabPanel value={value} index={1}>
+                {ActivityActions(pdfData, projectData)}
                 <ActivityParticipants id={props.match.params.id} />
             </TabPanel>
             <TabPanel value={value} index={2}>
+                {ActivityActions(pdfData, projectData)}
                 <QRCode style={{ margin: '3%'}} value={`https://moseadori.amosed.ro/${props.id}`} size={300} />
             </TabPanel>
-            <TabPanel value={value} index={3}>
-                {/* <ParticipantsPdf /> */}
-                {/* {ReactPDF.render(<Report />)} */}
+            {/* <TabPanel value={value} index={3}>
                 <PDFViewer style={{width: '100%', height: 900}}>
                     <Report data={pdfData} projectData={projectData} />
                 </PDFViewer>
-            </TabPanel>
+            </TabPanel> */}
         </Fragment>
     )
 

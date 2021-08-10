@@ -1,5 +1,5 @@
 import React from "react";
-import ReactPDF, {Page, Text, View, Document, StyleSheet, Image, Font} from '@react-pdf/renderer';
+import ReactPDF, { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import antet from '../img/antet.png';
 import arial from '../arial/ArialCE.ttf';
 import arialBold from '../arial/ArialCEBold.ttf';
@@ -110,17 +110,22 @@ export default class Report extends React.Component {
     //     )
     // }
 
+    //TODO: refacut cu jspdf
     render() {
-        const {data, projectData} = this.state;
+        const { data, projectData } = this.state;
+        console.log(data);
         return (
             <Document>
                 <Page>
-                      <View style={styles.header}>
+                    <View style={styles.header}>
                         <Image style={styles.image} src={antet} fixed />
-                      </View>
+                    </View>
                     <View>
-                        <Text style={{textAlign: 'center'}}>{projectData.name}</Text>
-                        <Text style={[{textAlign: 'center'}, styles.text]}>Data: {projectData.date}</Text>
+                        <Text style={{ textAlign: 'center' }}>Fisa de registru {projectData.name}</Text>
+                        <Text style={[{ textAlign: 'center' }, styles.text]}>Data: {projectData.date}</Text>
+                    </View>
+                    <View>
+                        <Text style={[styles.text, { marginLeft: '2%', marginTop: '1%' }]}>In tabelul de mai jos sunt afisati toti participantii de la proiectul {projectData.name}.</Text>
                     </View>
                     <View style={styles.table}>
                         <View style={styles.row}>
@@ -135,24 +140,47 @@ export default class Report extends React.Component {
                             </View>
                         </View>
 
-                        {data.map((part, index) => (
-                            <View style={styles.row}>
-                                <View style={styles.cellLeft}>
-                                    <Text style={styles.text}>{index + 1}.</Text>
+                        {data.map((part, index) => {
+
+                            if (index === data.length - 1) {
+                                return (
+                                    <View style={styles.row}>
+                                        <View style={[styles.cellLeft, {borderBottomWidth: 2, paddingBottom: '2%'}]}>
+                                            <Text style={styles.text}>{index + 1}</Text>
+                                        </View>
+                                        <View style={[styles.cellLeft, {borderBottomWidth: 2}]}>
+                                            <Text
+                                                style={styles.text}>{part.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}</Text>
+                                        </View>
+                                        <View style={[styles.cellRight, {borderBottomWidth: 2}]}>
+                                            <Text
+                                                style={styles.text}>{part.email}</Text>
+                                        </View>
+                                    </View>
+                                    
+                                )
+                            }
+
+                            return (
+                                <View style={styles.row}>
+                                    <View style={styles.cellLeft}>
+                                        <Text style={styles.text}>{index + 1}</Text>
+                                    </View>
+                                    <View style={styles.cellLeft}>
+                                        <Text
+                                            style={styles.text}>{part.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}</Text>
+                                    </View>
+                                    <View style={styles.cellRight}>
+                                        <Text
+                                            style={styles.text}>{part.email}</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.cellLeft}>
-                                    <Text
-                                        style={styles.text}>{part.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}</Text>
-                                </View>
-                                <View style={styles.cellRight}>
-                                    <Text
-                                        style={styles.text}>{part.email}</Text>
-                                </View>
-                            </View>
-                        ))}
+                            )
+                        })
+                        }
                     </View>
 
-                    <View style={{margin: '2%'}}>
+                    <View style={{ margin: '2%' }}>
                         <Text
                             style={[styles.title]}>Coordonator: {projectData.organizer}</Text>
                         <Text style={styles.text}>Semnatura </Text>
@@ -229,7 +257,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: 'black',
         borderRightWidth: 2,
-        flex: 1,
+        flex: 2,
         textAlign: 'center',
         padding: '1%'
     },
@@ -245,7 +273,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRightWidth: 2,
         borderTopWidth: 2,
-        flex: 1,
+        flex: 2,
         textAlign: 'center',
         padding: '1%'
     },
